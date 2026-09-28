@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cantinho do Espeto — Cardápio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --char: #1a1512;
+    --smoke: #241d19;
+    --ember: #e2551f;
+    --ember-dark: #b8401a;
+    --mustard: #f0b429;
+    --paper: #f4ecdc;
+    --paper-dim: #e7dcc4;
+    --brick: #8f2c1e;
+    --smoke-line: rgba(244,236,220,0.09);
+  }
+  *{ box-sizing: border-box; }
+  html{ scroll-behavior: smooth; }
+  body{
+    margin:0;
+    background: var(--char);
+    color: var(--paper);
+    font-family: 'DM Sans', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  a{ color: inherit; }
+
+  /* subtle charcoal grain / smoke texture */
+  .grain{
+    position: fixed; inset: 0; pointer-events: none; z-index: 0;
+    background-image:
+      radial-gradient(circle at 20% 20%, rgba(226,85,31,0.06), transparent 40%),
+      radial-gradient(circle at 85% 60%, rgba(240,180,41,0.05), transparent 45%);
+  }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position: relative;
+    padding: 4.5rem 1.5rem 3.5rem;
+    text-align: center;
+    background:
+      linear-gradient(180deg, var(--smoke) 0%, var(--char) 100%);
+    border-bottom: 6px solid var(--mustard);
+    overflow: hidden;
+  }
+  .hero::before{
+    content:"";
+    position:absolute; left:0; right:0; top:0; height:100%;
+    background: repeating-linear-gradient(115deg, transparent 0 38px, rgba(226,85,31,0.035) 38px 40px);
+    pointer-events:none;
+  }
+  .skewer-icon{
+    width: 46px; height: 46px; margin: 0 auto 1.1rem;
+    display:block;
+    color: var(--ember);
+  }
+  h1.brand{
+    font-family:'Anton', sans-serif;
+    font-weight: 400;
+    font-size: clamp(2.6rem, 9vw, 4.6rem);
+    line-height: 0.95;
+    letter-spacing: 0.01em;
+    margin: 0;
+    color: var(--paper);
+    text-shadow: 3px 3px 0 var(--ember-dark);
+  }
+  h1.brand span{ color: var(--mustard); text-shadow: 3px 3px 0 var(--brick); }
+  .tagline{
+    margin-top: 0.9rem;
+    font-size: 1.05rem;
+    color: var(--paper-dim);
+    font-style: italic;
+    letter-spacing: 0.01em;
+  }
+  .hero-meta{
+    margin-top: 1.6rem;
+    display:flex; flex-wrap:wrap; gap:0.6rem 1.4rem; justify-content:center;
+    font-size: 0.92rem;
+    color: var(--paper-dim);
+  }
+  .hero-meta strong{ color: var(--mustard); font-weight:700; }
+
+  .hero-links{
+    margin-top: 1.4rem;
+    display:flex; flex-wrap:wrap; gap: 0.7rem; justify-content:center;
+  }
+  .pill-link{
+    display:inline-flex; align-items:center; gap: 0.45rem;
+    text-decoration:none;
+    font-size: 0.86rem;
+    font-weight: 700;
+    padding: 0.5rem 1rem;
+    border-radius: 999px;
+    border: 1.5px solid var(--smoke-line);
+    color: var(--paper);
+    transition: transform .15s ease, border-color .15s ease, background .15s ease;
+  }
+  .pill-link svg{ width: 17px; height: 17px; flex-shrink:0; }
+  .pill-link:hover{ transform: translateY(-2px); }
+  .pill-link.whats{ border-color: rgba(37,211,102,0.4); }
+  .pill-link.whats:hover{ background: rgba(37,211,102,0.12); border-color: #25d366; }
+  .pill-link.whats svg{ color: #25d366; }
+  .pill-link.insta:hover{ background: rgba(226,85,31,0.12); border-color: var(--ember); }
+  .pill-link.insta svg{ color: var(--mustard); }
+
+  /* ---------- NAV ---------- */
+  nav.jumpnav{
+    position: sticky; top:0; z-index: 10;
+    background: rgba(26,21,18,0.94);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--smoke-line);
+    overflow-x: auto;
+    white-space: nowrap;
+    padding: 0.7rem 1rem;
+    -ms-overflow-style: none; scrollbar-width: none;
+  }
+  nav.jumpnav::-webkit-scrollbar{ display:none; }
+  nav.jumpnav a{
+    display:inline-block;
+    text-decoration:none;
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    color: var(--paper-dim);
+    padding: 0.4rem 0.9rem;
+    border: 1px solid var(--smoke-line);
+    border-radius: 999px;
+    margin-right: 0.5rem;
+    transition: border-color .15s ease, color .15s ease;
+  }
+  nav.jumpnav a:hover{ border-color: var(--ember); color: var(--mustard); }
+
+  /* ---------- MAIN ---------- */
+  main{ position: relative; z-index:1; max-width: 900px; margin: 0 auto; padding: 0 1.3rem; }
+
+  section.menu-section{ padding: 3rem 0 0.5rem; scroll-margin-top: 4rem; }
+  section.menu-section:last-of-type{ padding-bottom: 3rem; }
+
+  .section-head{
+    display:flex; align-items:baseline; gap: 0.8rem;
+    margin-bottom: 1.4rem;
+    border-bottom: 3px solid var(--ember);
+    padding-bottom: 0.6rem;
+  }
+  .section-head h2{
+    font-family:'Anton', sans-serif;
+    font-weight:400;
+    font-size: clamp(1.5rem, 5vw, 2.1rem);
+    color: var(--mustard);
+    margin:0;
+    letter-spacing: 0.01em;
+  }
+  .section-head .count{
+    font-size: 0.78rem;
+    color: var(--paper-dim);
+    opacity: 0.6;
+  }
+
+  .items{ list-style:none; margin:0; padding:0; }
+  .item{
+    display:flex; align-items:baseline; gap: 0.5rem;
+    padding: 0.62rem 0;
+    border-bottom: 1px dashed var(--smoke-line);
+  }
+  .item:last-child{ border-bottom:none; }
+  .item-name{ font-weight: 500; font-size: 1rem; flex-shrink: 0; }
+  .item-desc{
+    font-size: 0.78rem; color: var(--paper-dim); opacity:0.75;
+    display:block; margin-top: 0.15rem; font-style: italic;
+  }
+  .item-fill{
+    flex:1;
+    border-bottom: 2px dotted rgba(244,236,220,0.28);
+    margin: 0 0.3rem;
+    transform: translateY(-4px);
+    min-width: 12px;
+  }
+  .price{
+    font-weight: 700;
+    font-size: 0.98rem;
+    color: var(--char);
+    background: var(--mustard);
+    padding: 0.18rem 0.6rem;
+    border-radius: 4px;
+    white-space: nowrap;
+    flex-shrink:0;
+  }
+  .price.na{
+    background: transparent;
+    color: var(--paper-dim);
+    border: 1px dashed var(--paper-dim);
+  }
+
+  .grid-2{
+    display:grid; grid-template-columns: 1fr; gap: 0 3rem;
+  }
+  @media (min-width: 720px){
+    .grid-2{ grid-template-columns: 1fr 1fr; }
+  }
+
+  .drinks-groups{ display:flex; flex-direction:column; gap: 2.2rem; }
+
+  .note{
+    font-size: 0.78rem; color: var(--paper-dim); opacity: 0.65; margin-top: -0.2rem; margin-bottom: 1rem;
+  }
+
+  /* ---------- FOOTER ---------- */
+  footer{
+    margin-top: 2rem;
+    padding: 2.6rem 1.5rem 3rem;
+    text-align:center;
+    background: var(--smoke);
+    border-top: 6px solid var(--brick);
+  }
+  footer .fbrand{
+    font-family:'Anton', sans-serif;
+    font-size: 1.4rem;
+    color: var(--mustard);
+    letter-spacing: 0.02em;
+  }
+  footer p{
+    color: var(--paper-dim);
+    font-size: 0.85rem;
+    max-width: 420px;
+    margin: 0.8rem auto 0;
+    line-height: 1.5;
+  }
+
+  ::selection{ background: var(--ember); color: var(--paper); }
+
+  /* ---------- ITEM LAYOUT UPDATE (qty stepper) ---------- */
+  .item{ flex-wrap: wrap; }
+  .item-name{ min-width: 0; }
+
+  .qty-stepper{
+    display:flex; align-items:center; gap: 0.55rem;
+    flex-shrink:0;
+    order: 3;
+  }
+  .qty-btn{
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    border: 1.5px solid var(--ember);
+    background: transparent;
+    color: var(--paper);
+    font-size: 1.05rem;
+    line-height: 1;
+    display:flex; align-items:center; justify-content:center;
+    cursor:pointer;
+    transition: background .15s ease, transform .1s ease, border-color .15s ease;
+    -webkit-tap-highlight-color: transparent;
+    padding: 0;
+  }
+  .qty-btn:hover{ background: rgba(226,85,31,0.18); }
+  .qty-btn:active{ transform: scale(0.92); }
+  .qty-btn.plus{ background: var(--ember); border-color: var(--ember); }
+  .qty-btn.plus:hover{ background: var(--ember-dark); }
+  .qty-value{
+    min-width: 1.3rem;
+    text-align:center;
+    font-weight: 700;
+    font-size: 0.98rem;
+    color: var(--mustard);
+  }
+  .qty-note{
+    font-size: 0.75rem;
+    color: var(--paper-dim);
+    opacity: 0.7;
+    font-style: italic;
+    flex-shrink:0;
+  }
+  .item.in-cart{ background: rgba(240,180,41,0.06); border-radius: 6px; }
+
+  /* ---------- CART BAR ---------- */
+  .cart-bar{
+    position: fixed;
+    left: 0; right: 0; bottom: 0;
+    z-index: 30;
+    background: linear-gradient(180deg, var(--ember-dark), var(--brick));
+    border-top: 3px solid var(--mustard);
+    padding: 0.85rem 1.2rem;
+    display:flex;
+    align-items:center;
+    justify-content: space-between;
+    gap: 1rem;
+    box-shadow: 0 -6px 18px rgba(0,0,0,0.35);
+    transform: translateY(110%);
+    transition: transform .25s ease;
+  }
+  .cart-bar.visible{ transform: translateY(0); }
+  .cart-bar .cart-info{ color: var(--paper); font-size: 0.9rem; line-height:1.3; }
+  .cart-bar .cart-info strong{ display:block; font-size: 1.15rem; color: var(--mustard); font-family:'Anton', sans-serif; letter-spacing:0.01em; }
+  .cart-bar button.cart-cta{
+    background: var(--mustard);
+    color: var(--char);
+    border: none;
+    font-weight: 700;
+    font-size: 0.92rem;
+    padding: 0.75rem 1.3rem;
+    border-radius: 999px;
+    cursor:pointer;
+    white-space: nowrap;
+    transition: transform .15s ease, background .15s ease;
+    flex-shrink:0;
+  }
+  .cart-bar button.cart-cta:hover{ background:#ffc94a; transform: translateY(-2px); }
+
+  /* ---------- MODAL ---------- */
+  .modal-overlay{
+    position: fixed; inset:0; z-index:40;
+    background: rgba(10,7,6,0.72);
+    display:none;
+    align-items:flex-end;
+    justify-content:center;
+    padding: 0;
+  }
+  .modal-overlay.open{ display:flex; }
+  @media (min-width: 640px){
+    .modal-overlay{ align-items:center; }
+  }
+  .modal-box{
+    background: var(--smoke);
+    width: 100%;
+    max-width: 480px;
+    max-height: 88vh;
+    overflow-y: auto;
+    border-radius: 18px 18px 0 0;
+    border: 1px solid var(--smoke-line);
+    border-bottom: none;
+    padding: 1.6rem 1.4rem 1.8rem;
+    box-shadow: 0 -10px 40px rgba(0,0,0,0.5);
+  }
+  @media (min-width: 640px){
+    .modal-box{ border-radius: 18px; border-bottom: 1px solid var(--smoke-line); }
+  }
+  .modal-box h3{
+    font-family:'Anton', sans-serif; font-weight:400;
+    color: var(--mustard); font-size: 1.5rem; margin: 0 0 0.3rem;
+  }
+  .modal-box .modal-sub{ color: var(--paper-dim); font-size: 0.85rem; margin: 0 0 1.2rem; }
+
+  .order-summary{
+    background: rgba(244,236,220,0.04);
+    border: 1px solid var(--smoke-line);
+    border-radius: 10px;
+    padding: 0.8rem 1rem;
+    margin-bottom: 1.3rem;
+    max-height: 160px;
+    overflow-y: auto;
+  }
+  .order-summary .row{
+    display:flex; justify-content:space-between; gap:0.6rem;
+    font-size: 0.86rem; padding: 0.28rem 0; color: var(--paper);
+  }
+  .order-summary .row .qtylabel{ color: var(--mustard); font-weight:700; margin-right:0.35rem; }
+  .order-summary .total-row{
+    display:flex; justify-content:space-between;
+    border-top: 1px dashed var(--smoke-line);
+    margin-top: 0.5rem; padding-top: 0.6rem;
+    font-weight:700; color: var(--mustard); font-size: 1rem;
+  }
+
+  .field{ margin-bottom: 1rem; }
+  .field label{
+    display:block; font-size: 0.8rem; font-weight:700;
+    color: var(--paper-dim); margin-bottom: 0.4rem;
+    letter-spacing: 0.02em;
+  }
+  .field label .opt{ font-weight:400; opacity:0.7; font-style:italic; }
+  .field input{
+    width:100%;
+    background: rgba(244,236,220,0.06);
+    border: 1.5px solid var(--smoke-line);
+    color: var(--paper);
+    font-family:'DM Sans', sans-serif;
+    font-size: 0.98rem;
+    padding: 0.7rem 0.85rem;
+    border-radius: 8px;
+    outline:none;
+    transition: border-color .15s ease;
+  }
+  .field input:focus{ border-color: var(--ember); }
+  .field input::placeholder{ color: var(--paper-dim); opacity:0.5; }
+  .field .err{ color: var(--ember); font-size: 0.76rem; margin-top: 0.3rem; display:none; }
+  .field.invalid input{ border-color: var(--ember); }
+  .field.invalid .err{ display:block; }
+
+  .modal-actions{ display:flex; gap: 0.7rem; margin-top: 1.4rem; }
+  .modal-actions button{
+    flex:1;
+    border-radius: 999px;
+    padding: 0.85rem 1rem;
+    font-weight:700;
+    font-size: 0.95rem;
+    cursor:pointer;
+    border: none;
+  }
+  .modal-actions .btn-cancel{
+    background: transparent;
+    border: 1.5px solid var(--smoke-line);
+    color: var(--paper-dim);
+  }
+  .modal-actions .btn-cancel:hover{ border-color: var(--paper-dim); }
+  .modal-actions .btn-send{
+    background: #25d366;
+    color: #05320f;
+    display:flex; align-items:center; justify-content:center; gap:0.5rem;
+  }
+  .modal-actions .btn-send:hover{ background:#2fe273; }
+  .modal-actions .btn-send svg{ width:18px; height:18px; }
+
+  body.modal-locked{ overflow: hidden; }
+
+  /* spacer so cart bar never covers last section content */
+  .cart-spacer{ height: 0; transition: height .2s ease; }
+</style>
+</head>
+<body>
+<div class="grain"></div>
+
+<header class="hero">
+  <svg class="skewer-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <line x1="6" y1="40" x2="42" y2="8" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+    <circle cx="16" cy="30" r="4.5" fill="currentColor"/>
+    <rect x="22.5" y="20.5" width="8" height="8" rx="1.5" transform="rotate(-45 26.5 24.5)" fill="currentColor"/>
+    <circle cx="34" cy="16" r="4.5" fill="currentColor"/>
+  </svg>
+  <h1 class="brand">CANTINHO <span>DO ESPETO</span></h1>
+  <p class="tagline">Espetos na brasa, chopp gelado e boa companhia</p>
+  <div class="hero-meta">
+    <span><strong>Guararapes</strong> · SP</span>
+    <span>Cardápio atualizado</span>
+  </div>
+  <div class="hero-links">
+    <a class="pill-link whats" href="https://wa.me/5518997992355" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.47 14.38c-.29-.15-1.7-.84-1.96-.93-.26-.1-.46-.15-.65.15-.19.29-.75.93-.92 1.12-.17.19-.34.22-.63.07-.29-.15-1.23-.45-2.35-1.45-.87-.77-1.45-1.73-1.62-2.02-.17-.29-.02-.45.13-.6.13-.13.29-.34.44-.51.15-.17.19-.29.29-.48.1-.19.05-.36-.02-.51-.07-.15-.65-1.56-.89-2.14-.23-.56-.47-.48-.65-.49-.17-.01-.36-.01-.55-.01-.19 0-.51.07-.78.36-.26.29-1.02 1-1.02 2.43 0 1.43 1.05 2.82 1.19 3.01.15.19 2.07 3.16 5.02 4.43.7.3 1.25.48 1.68.62.7.22 1.34.19 1.84.11.56-.08 1.7-.7 1.94-1.37.24-.68.24-1.26.17-1.38-.07-.12-.26-.19-.55-.34z"/><path d="M12.02 2.5c-5.25 0-9.5 4.24-9.5 9.48 0 1.67.44 3.29 1.27 4.72L2.5 21.5l4.9-1.28a9.48 9.48 0 0 0 4.62 1.18h.01c5.24 0 9.5-4.24 9.5-9.48 0-2.53-.99-4.91-2.78-6.7a9.47 9.47 0 0 0-6.73-2.72zm0 17.32h-.01a7.83 7.83 0 0 1-3.99-1.09l-.29-.17-2.9.76.78-2.82-.19-.29a7.85 7.85 0 0 1-1.2-4.23c0-4.34 3.53-7.87 7.88-7.87 2.1 0 4.08.82 5.57 2.31a7.82 7.82 0 0 1 2.31 5.57c0 4.34-3.54 7.83-7.96 7.83z"/></svg>
+      <span>(18) 99799-2355</span>
+    </a>
+    <a class="pill-link insta" href="https://www.instagram.com/cantinhodoespeto46" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="0.9" fill="currentColor" stroke="none"/></svg>
+      <span>@cantinhodoespeto46</span>
+    </a>
+  </div>
+</header>
+
+<nav class="jumpnav" aria-label="Navegação do cardápio">
+  <a href="#espetos">Espetos</a>
+  <a href="#acompanhamentos">Acompanhamentos</a>
+  <a href="#cervejas">Cervejas</a>
+  <a href="#bebidas">Bebidas</a>
+  <a href="#sucos">Sucos</a>
+  <a href="#aguas">Águas</a>
+  <a href="#refrigerante">Refrigerante</a>
+</nav>
+
+<main>
+
+  <section class="menu-section" id="espetos">
+    <div class="section-head"><h2>Espetos</h2><span class="count">13 opções</span></div>
+    <ul class="items">
+      <li class="item" data-name="Fraldinha" data-price="9.00"><span class="item-name">Fraldinha</span><span class="item-fill"></span><span class="price">R$ 9,00</span><div class="qty-stepper" role="group" aria-label="Quantidade de Fraldinha"><button type="button" class="qty-btn minus" aria-label="Diminuir quantidade">&minus;</button><span class="qty-value">0</span><button type="button" class="qty-btn plus" aria-label="Aumentar quantidade">+</button></div></li>
+      <li class="item" data-name="Coração" data-price="8.00"><span class="item-name">Coração</span><span class="item-fill"></span><span class="price">R$ 8,00</span><div class="qty-stepper" role="group" aria-label="Quantidade de Coração"><button type="button" class="qty-btn minus" aria-label="Diminuir quantidade">&minus;</button><span class="qty-value">0</span><button type="button" class="qty-btn plus" aria-label="Aumentar quantidade">+</button></div></li>
+      <li class="item" data-name="Queijo" data-price="9.00"><span class="item-name">Queijo</span><span class="item-fill"></span><span class="price">R$ 9,00</span><div class="qty-stepper" role="group" aria-label="Quantidade de Queijo"><button type="button" class="qty-btn minus" aria-label="Diminuir quantidade">&minus;</button><span class="qty-value">0</span><button type="button" class="qty-btn plus" aria-label="Aumentar quantidade">+</button></div></li>
+      <li class="item" data-name="Cupim" data-price="9.00"><span class="item-name">Cupim</span><span class="item-fill"></span><span class="price">R$ 9,00</span><div class="qty-stepper" role="group" aria-label="Quantidade de Cupim"><button type="button" class="qty-btn minus" aria-label="Diminuir quantidade">&minus;</button><span class="qty-value">0</span><button type="button" class="qty-btn plus" aria-label="Aumentar quantidade">+</button></div></li>
+      <li class="item" data-name="Kafta" data-price="8.00"><span class="item-name">Kafta</span><span class="item-fill"></span><span class="price">R$ 8,00</span><div class="qty-stepper" role="group" aria-label="Quantidade de Kafta"><button type="button" class="qty-btn minus" aria-label="Diminuir quantidade">&minus;</button><span class="qty-value">0</span><button type="button" class="qty-btn plus" aria-label="Aumentar quantidade">+</button></div></li>
+      <li class="item" data-name="Kafta c/ queijo" data-price="10.00"><span class="item-name">Kafta c/ queijo</span><span class="item-fill"></span><span class="price">R$ 10,00</span><div class="qty-stepper" role="group" aria-label="Quantidade de Kafta c/ queijo"><button type="button" class="qty-btn minus" aria-label="Diminuir quantidade">&minus;</button><span class="qty-value">0</span><button type="button" class="qty-btn plus" aria-label="Aumentar quantidade">+</button></div></li>
+      <li class="item" data-name="Medalhão de cupim" data-price="10.00"><span class="item-name">Medalhão de cupim</span><span class="item-fill"></span><span class="price">R$ 10,00</span><div class="qty-stepper" role="group" aria-label="Quantidade de Medalhão de cupim"><button type="button" class="qty-btn minus" aria-label="Diminuir quantidade">&minus;</button><span class="qty-value">0</span><button type="button" class="qty-btn plus" aria-label="Aumentar quantidade">+</button></div></li>
+      <li class="item" data-name="Medalhão de frango" data-price="8.00"><span class="item-name">Medalhão de frango</span><span class="item-fill"></span><span class="price">R$ 8,00</span><div class="qty-stepper" role="group" aria-label="Quantidade de Medalhão de frango"><button type="button" class="qty-btn minus" aria-label="Diminuir quantidade">&minus;</button><span class="qty-value">0</span><button type="button" class="qty-btn plus" aria-label="Aumentar quantidade">+</button></div></li>
+      <li class="item" data-name="Medalhão de queijo" data-price="9.00"><span class="item-name">Medalhão de queijo</span><span class="item-fill"></span><span class="price">R$ 9,00</span><div class="qty-stepper" role="group" aria-label="Quantidade de Medalhão de queijo"><button type="button" class="qty-btn minus" aria-label="Diminuir quantidade">&minus;</button><span class="qty-value">0</span><button type="button" class="qty-btn plus" aria-label="Aumentar quantidade">+</button></div></li>
+      <li class="item" data-name="Linguiça" data-price="8.00"><span class="item-name">Linguiça</span><span class="item-fill"></span><span class="price">R$ 8,00</span><div class="qty-stepper" role="group" aria-label="Quantidade de Linguiça"><button type="button" class="qty-btn minus" aria-label="Diminuir quantidade">&minus;</button><span class="qty-value">0</span><button type="button" class="qty-btn plus" aria-label="Aumentar quantidade">+</button></div></li>
+      <li class="item" data-name="Linguiça apimentada" data-price="8.00"><span class="item-name">Linguiça apimentada</span><span class="item-fill"></span><span class="price">R$ 8,00</span><div class="qty-stepper" role="group" aria-label="Quantidade de Linguiça apimentada"><button type="button" class="qty-btn minus" aria-label="Diminuir quantidade">&minus;</button><span class="qty-value">0</span><button type="button" class="qty-btn plus" aria-label="Aumentar quantidade">+</button></div></li>
+      <li class="item" data-name="Tulipa de frango" data-price="8.00"><span class="item-name">Tulipa de frango</span><span class="item-fill"></span><span class="price">R$ 8,00</span><div class="qty-stepper" role="group" aria-label="Quantidade de Tulipa de frango"><button type="button" class="qty-btn minus" aria-label="Diminuir quantidade">&minus;</button><span class="qty-value">0</span><button type="button" class="qty-btn plus" aria-label="Aumentar quantidade">+</button></div></li>
+      <li class="item" data-name="Filé de costela" data-price="10.00"><span class="item-name">Filé de costela</span><span class="item-fill"></span><span class="price">R$ 10,00</span><div class="qty-stepper" role="group" aria-label="Quantidade de Filé de costela"><button type="button" class="qty-btn minus" aria-label="Diminuir quantidade">&minus;</button><span class="qty-value">0</span><button type="button" class="qty-btn plus" aria-label="Aumentar quantidade">+</button></div></li>
+    </ul>
+  </section>
+
+  <section class="menu-section" id="acompanhamentos">
+    <div class="section-head"><h2>Acompanhamentos</h2><span class="count">3 opções</span></div>
+    <ul class="items">
+      <li class="item" data-name="Porção de mandioca média" data-price="10.00"><span class="item-name">Porção de mandioca média</span><span class="item-fill"></span><span class="price">R$ 10,00</span><div class="qty-stepper" role="group" aria-label="Quantidade de Porção de mandioca média"><button type="button" class="qty-btn minus" aria-label="Diminuir quantidade">&minus;</button><span class="qty-value">0</span><button type="button" class="qty-btn plus" aria-label="Aumentar quantidade">+</button></div></li>
+      <li class="item" data-name="Porção de mandioca grande" data-price="15.00"><span class="item-name">Porção de mandioca grande</span><span class="item-fill"></span><span class="price">R$ 15,00</span><div class="qty-stepper" role="group" aria-label="Quantidade de Porção de mandioca grande"><button type="button" class="qty-btn minus" aria-label="Diminuir quantidade">&minus;</button><span class="qty-value">0</span><button type="button" class="qty-btn plus" aria-label="Aumentar quantidade">+</button></div></li>
+      <li class="item" data-name="Pão de alho" data-price="6.00"><span class="item-name">Pão de alho</span><span class="item-fill"></span><span class="price">R$ 6,00</span><div class="qty-stepper" role="group" aria-label="Quantidade de Pão de alho"><button type="button" class="qty-btn minus" aria-label="Diminuir quantidade">&minus;</button><span class="qty-value">0</span><button type="button" class="qty-btn plus" aria-label="Aumentar quantidade">+</button></div></li>
+    </ul>
+  </section>
+
+  <section class="menu-section" id="cervejas">
+    <div class="section-head"><h2>Cervejas</h2><span class="count">12 opções</span></div>
+    <div class="grid-2">
+      <ul class="items">
+        <li class="item" data-name="Brahma / Skol romarinho" data-price="4.00"><span class="item-name">Brahma / Skol romarinho</span><span class="item-fill"></span><span class="price">R$ 4,00</span><div class="qty-stepper" role="group" aria-label="Quantidade de Brahma / Skol romarinho"><button type="button" class="qty-btn minus" aria-label="Diminuir quantidade">&minus;</button><span class="qty-value">0</span><button type="button" class="qty-btn plus" aria-label="Aumentar quantidade">+</button></div></li>
+        <li class="item" data-name="Original romarinho" data-price="6.00"><span class="item-name">Original romarinho</span><span class="item-fill"></span><span class="price">R$ 6,00</span><div class="qty-stepper" role="group" aria-label="Quantidade de Original romarinho"><button type="button" class="qty-btn minus" aria-label="Diminuir quantidade">&minus;</button><span class="qty-value">0</span><button type="button" class="qty-btn plus" aria-label="Aumentar quantidade">+</button></div></li>
+        <li class="item" data-name="Brahma / Skol / Antarctica lata" data-price="5.00"><span class="item-name">Brahma / Skol / Antarctica lata</span><span class="item-fill"></span><span class="price">R$ 5,00</span><div class="qty-stepper" role="group" aria-label="Quantidade de Brahma / Skol / Antarctica lata"><button type="button" class="qty-btn minus" aria-label="Diminuir quantidade">&minus;</button><span class="qty-value">0</span><button type="button" class="qty-btn plus" aria-label="Aumentar quantidade">+</button></div></li>
+        <li class="item" data-name="Original lata" data-price="6.00"><span class="item-name">Original lata</span><span class="item-fill"></span><span class="price">R$ 6,00</span><div class="qty-stepper" role="group" aria-label="Quantidade de Original lata"><button type="button" class="qty-btn minus" aria-label="Diminuir quantidade">&minus;</button><span class="qty-value">0</span><button type="button" class="qty-btn plus" aria-label="Aumentar quantidade">+</button></div></li>
+        <li class="item" data-name="Skol latão" data-price="8.00"><span class="item-name">Skol latão</span><span class="item-fill"></span><span class="price">R$ 8,00</span><div class="qty-stepper" role="group" aria-label="Quantidade de Skol latão"><button type="button" class="qty-btn minus" aria-label="Diminuir quantidade">&minus;</button><span class="qty-value">0</span><button type="button" class="qty-btn plus" aria-label="Aumentar quantidade">+</button></div></li>
+        <li class="item" data-name="Spaten latão" data-price="8.00"><span class="item-name">Spaten latão</span><span class="item-fill"></span><span class="price">R$ 8,00</span><div class="qty-stepper" role="group" aria-label="Quantidade de Spaten latão"><button type="button" class="qty-btn minus" aria-label="Diminuir quantidade">&minus;</button><span class="qty-value">0</span><button type="button" class="qty-btn plus" aria-label="Aumentar quantidade">+</button></div></li>
+      </ul>
+      <ul class="items">
+        <li class="item" data-name="Império lata" data-price="5.00"><span class="item-name">Império lata</span><span class="item-fill"></span><span class="price">R$ 5,00</span><div class="qty-stepper" role="group" aria-label="Quantidade de Império lata"><button type="button" class="qty-btn minus" aria-label="Diminuir quantidade">&minus;</button><span class="qty-value">0</span><button type="button" class="qty-btn plus" aria-label="Aumentar quantidade">+</button></div></li>
+        <li class="item" data-name="Petra lata" data-price="5.00"><span class="item-name">Petra lata</span><span class="item-fill"></span><span class="price">R$ 5,00</span><div class="qty-stepper" role="group" aria-label="Quantidade de Petra lata"><button type="button" class="qty-btn minus" aria-label="Diminuir quantidade">&minus;</button><span class="qty-value">0</span><button type="button" class="qty-btn plus" aria-label="Aumentar quantidade">+</button></div></li>
+        <li class="item" data-name="Amstel lata" data-price="6.00"><span class="item-name">Amstel lata</span><span class="item-fill"></span><span class="price">R$ 6,00</span><div class="qty-stepper" role="group" aria-label="Quantidade de Amstel lata"><button type="button" class="qty-btn minus" aria-label="Diminuir quantidade">&minus;</button><span class="qty-value">0</span><button type="button" class="qty-btn plus" aria-label="Aumentar quantidade">+</button></div></li>
+        <li class="item" data-name="Budweiser lata" data-price="6.00"><span class="item-name">Budweiser lata</span><span class="item-fill"></span><span class="price">R$ 6,00</span><div class="qty-stepper" role="group" aria-label="Quantidade de Budweiser lata"><button type="button" class="qty-btn minus" aria-label="Diminuir quantidade">&minus;</button><span class="qty-value">0</span><button type="button" class="qty-btn plus" aria-label="Aumentar quantidade">+</button></div></li>
+        <li class="item" data-name="Heineken long neck" data-price="9.50"><span class="item-name">Heineken long neck</span><span class="item-fill"></span><span class="price">R$ 9,50</span><div class="qty-stepper" role="group" aria-label="Quantidade de Heineken long neck"><button type="button" class="qty-btn minus" aria-label="Diminuir quantidade">&minus;</button><span class="qty-value">0</span><button type="button" class="qty-btn plus" aria-label="Aumentar quantidade">+</button></div></li>
+        <li class="item" data-name="Heineken zero long neck" data-price="10.00"><span class="item-name">Heineken zero long neck</span><span class="item-fill"></span><span class="price">R$ 10,00</span><div class="qty-stepper" role="group" aria-label="Quantidade de Heineken zero long neck"><button type="button" class="qty-btn minus" aria-label="Diminuir quantidade">&minus;</button><span class="qty-value">0</span><button type="button" class="qty-btn plus" aria-label="Aumentar quantidade">+</button></div></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="menu-section" id="bebidas">
+    <div class="section-head"><h2>Bebidas</h2><span class="count">6 opções</span></div>
+    <ul class="items">
+      <li class="item" data-name="Chopp vinho 58 Wienbbier 473ml" data-price="12.00"><span class="item-name">Chopp vinho 58 Wienbbier 473ml</span><span class="item-fill"></span><span class="price">R$ 12,00</span><div class="qty-stepper" role="group" aria-label="Quantidade de Chopp vinho 58 Wienbbier 473ml"><button type="button" class="qty-btn minus" aria-label="Diminuir quantidade">&minus;</button><span class="qty-value">0</span><button type="button" class="qty-btn plus" aria-label="Aumentar quantidade">+</button></div></li>
+      <li class="item" data-name="Chopp vinho Wienbbier 710ml" data-price=""><span class="item-name">Chopp vinho Wienbbier 710ml</span><span class="item-fill"></span><span class="price na">consultar</span><span class="qty-note">Consulte o atendente</span></li>
+      <li class="item" data-name="Chopp de vinho Stempel 600ml" data-price="13.00"><span class="item-name">Chopp de vinho Stempel 600ml</span><span class="item-fill"></span><span class="price">R$ 13,00</span><div class="qty-stepper" role="group" aria-label="Quantidade de Chopp de vinho Stempel 600ml"><button type="button" class="qty-btn minus" aria-label="Diminuir quantidade">&minus;</button><span class="qty-value">0</span><button type="button" class="qty-btn plus" aria-label="Aumentar quantidade">+</button></div></li>
+      <li class="item" data-name="Ice Cabaré (limão / frutas vermelhas)" data-price="9.00"><span class="item-name">Ice Cabaré (limão / frutas vermelhas)</span><span class="item-fill"></span><span class="price">R$ 9,00</span><div class="qty-stepper" role="group" aria-label="Quantidade de Ice Cabaré (limão / frutas vermelhas)"><button type="button" class="qty-btn minus" aria-label="Diminuir quantidade">&minus;</button><span class="qty-value">0</span><button type="button" class="qty-btn plus" aria-label="Aumentar quantidade">+</button></div></li>
+      <li class="item" data-name="Energético Red Bull" data-price="12.00"><span class="item-name">Energético Red Bull</span><span class="item-fill"></span><span class="price">R$ 12,00</span><div class="qty-stepper" role="group" aria-label="Quantidade de Energético Red Bull"><button type="button" class="qty-btn minus" aria-label="Diminuir quantidade">&minus;</button><span class="qty-value">0</span><button type="button" class="qty-btn plus" aria-label="Aumentar quantidade">+</button></div></li>
+      <li class="item" data-name="Energético Monster" data-price="12.00"><span class="item-name">Energético Monster</span><span class="item-fill"></span><span class="price">R$ 12,00</span><div class="qty-stepper" role="group" aria-label="Quantidade de Energético Monster"><button type="button" class="qty-btn minus" aria-label="Diminuir quantidade">&minus;</button><span class="qty-value">0</span><button type="button" class="qty-btn plus" aria-label="Aumentar quantidade">+</button></div></li>
+    </ul>
+  </section>
+
+  <section class="menu-section" id="sucos">
+    <div class="section-head"><h2>Sucos</h2><span class="count">6 opções</span></div>
+    <ul class="items">
+      <li class="item" data-name="Dell Valle 450ml" data-price="7.00"><span class="item-name">Dell Valle 450ml<span class="item-desc">Uva / pêssego / manga / goiaba</span></span><span class="item-fill"></span><span class="price">R$ 7,00</span><div class="qty-stepper" role="group" aria-label="Quantidade de Dell Valle 450ml"><button type="button" class="qty-btn minus" aria-label="Diminuir quantidade">&minus;</button><span class="qty-value">0</span><button type="button" class="qty-btn plus" aria-label="Aumentar quantidade">+</button></div></li>
+      <li class="item" data-name="Dell Valle lata" data-price="6.00"><span class="item-name">Dell Valle lata<span class="item-desc">Uva / laranja</span></span><span class="item-fill"></span><span class="price">R$ 6,00</span><div class="qty-stepper" role="group" aria-label="Quantidade de Dell Valle lata"><button type="button" class="qty-btn minus" aria-label="Diminuir quantidade">&minus;</button><span class="qty-value">0</span><button type="button" class="qty-btn plus" aria-label="Aumentar quantidade">+</button></div></li>
+      <li class="item" data-name="Tampico 450ml" data-price="7.00"><span class="item-name">Tampico 450ml</span><span class="item-fill"></span><span class="price">R$ 7,00</span><div class="qty-stepper" role="group" aria-label="Quantidade de Tampico 450ml"><button type="button" class="qty-btn minus" aria-label="Diminuir quantidade">&minus;</button><span class="qty-value">0</span><button type="button" class="qty-btn plus" aria-label="Aumentar quantidade">+</button></div></li>
+      <li class="item" data-name="Tampico 2 litros" data-price="13.00"><span class="item-name">Tampico 2 litros</span><span class="item-fill"></span><span class="price">R$ 13,00</span><div class="qty-stepper" role="group" aria-label="Quantidade de Tampico 2 litros"><button type="button" class="qty-btn minus" aria-label="Diminuir quantidade">&minus;</button><span class="qty-value">0</span><button type="button" class="qty-btn plus" aria-label="Aumentar quantidade">+</button></div></li>
+      <li class="item" data-name="Pomar 1 litro" data-price="17.00"><span class="item-name">Pomar 1 litro<span class="item-desc">Laranja / uva / morango / caju / acerola / goiaba</span></span><span class="item-fill"></span><span class="price">R$ 17,00</span><div class="qty-stepper" role="group" aria-label="Quantidade de Pomar 1 litro"><button type="button" class="qty-btn minus" aria-label="Diminuir quantidade">&minus;</button><span class="qty-value">0</span><button type="button" class="qty-btn plus" aria-label="Aumentar quantidade">+</button></div></li>
+      <li class="item" data-name="Prats 1 litro" data-price=""><span class="item-name">Prats 1 litro<span class="item-desc">Laranja / uva</span></span><span class="item-fill"></span><span class="price na">consultar</span><span class="qty-note">Consulte o atendente</span></li>
+    </ul>
+  </section>
+
+  <section class="menu-section" id="aguas">
+    <div class="section-head"><h2>Águas</h2><span class="count">5 opções</span></div>
+    <ul class="items">
+      <li class="item" data-name="Água tônica / Schweppes" data-price="5.00"><span class="item-name">Água tônica / Schweppes</span><span class="item-fill"></span><span class="price">R$ 5,00</span><div class="qty-stepper" role="group" aria-label="Quantidade de Água tônica / Schweppes"><button type="button" class="qty-btn minus" aria-label="Diminuir quantidade">&minus;</button><span class="qty-value">0</span><button type="button" class="qty-btn plus" aria-label="Aumentar quantidade">+</button></div></li>
+      <li class="item" data-name="Água s/ gás" data-price="3.00"><span class="item-name">Água s/ gás</span><span class="item-fill"></span><span class="price">R$ 3,00</span><div class="qty-stepper" role="group" aria-label="Quantidade de Água s/ gás"><button type="button" class="qty-btn minus" aria-label="Diminuir quantidade">&minus;</button><span class="qty-value">0</span><button type="button" class="qty-btn plus" aria-label="Aumentar quantidade">+</button></div></li>
+      <li class="item" data-name="Água c/ gás" data-price="4.00"><span class="item-name">Água c/ gás</span><span class="item-fill"></span><span class="price">R$ 4,00</span><div class="qty-stepper" role="group" aria-label="Quantidade de Água c/ gás"><button type="button" class="qty-btn minus" aria-label="Diminuir quantidade">&minus;</button><span class="qty-value">0</span><button type="button" class="qty-btn plus" aria-label="Aumentar quantidade">+</button></div></li>
+      <li class="item" data-name="Isotônico Gatorade" data-price="8.00"><span class="item-name">Isotônico Gatorade</span><span class="item-fill"></span><span class="price">R$ 8,00</span><div class="qty-stepper" role="group" aria-label="Quantidade de Isotônico Gatorade"><button type="button" class="qty-btn minus" aria-label="Diminuir quantidade">&minus;</button><span class="qty-value">0</span><button type="button" class="qty-btn plus" aria-label="Aumentar quantidade">+</button></div></li>
+      <li class="item" data-name="Isotônico H2O" data-price="8.00"><span class="item-name">Isotônico H2O</span><span class="item-fill"></span><span class="price">R$ 8,00</span><div class="qty-stepper" role="group" aria-label="Quantidade de Isotônico H2O"><button type="button" class="qty-btn minus" aria-label="Diminuir quantidade">&minus;</button><span class="qty-value">0</span><button type="button" class="qty-btn plus" aria-label="Aumentar quantidade">+</button></div></li>
+    </ul>
+  </section>
+
+  <section class="menu-section" id="refrigerante">
+    <div class="section-head"><h2>Refrigerante</h2><span class="count">5 opções</span></div>
+    <ul class="items">
+      <li class="item" data-name="PET 200ml" data-price="3.00"><span class="item-name">PET 200ml<span class="item-desc">Coca-Cola / Coca Zero</span></span><span class="item-fill"></span><span class="price">R$ 3,00</span><div class="qty-stepper" role="group" aria-label="Quantidade de PET 200ml"><button type="button" class="qty-btn minus" aria-label="Diminuir quantidade">&minus;</button><span class="qty-value">0</span><button type="button" class="qty-btn plus" aria-label="Aumentar quantidade">+</button></div></li>
+      <li class="item" data-name="Lata" data-price="5.00"><span class="item-name">Lata<span class="item-desc">Coca-Cola / Coca Zero</span></span><span class="item-fill"></span><span class="price">R$ 5,00</span><div class="qty-stepper" role="group" aria-label="Quantidade de Lata"><button type="button" class="qty-btn minus" aria-label="Diminuir quantidade">&minus;</button><span class="qty-value">0</span><button type="button" class="qty-btn plus" aria-label="Aumentar quantidade">+</button></div></li>
+      <li class="item" data-name="600ml" data-price="8.00"><span class="item-name">600ml<span class="item-desc">Coca-Cola / Coca Zero</span></span><span class="item-fill"></span><span class="price">R$ 8,00</span><div class="qty-stepper" role="group" aria-label="Quantidade de 600ml"><button type="button" class="qty-btn minus" aria-label="Diminuir quantidade">&minus;</button><span class="qty-value">0</span><button type="button" class="qty-btn plus" aria-label="Aumentar quantidade">+</button></div></li>
+      <li class="item" data-name="1 litro" data-price="10.00"><span class="item-name">1 litro<span class="item-desc">Coca-Cola / Coca Zero</span></span><span class="item-fill"></span><span class="price">R$ 10,00</span><div class="qty-stepper" role="group" aria-label="Quantidade de 1 litro"><button type="button" class="qty-btn minus" aria-label="Diminuir quantidade">&minus;</button><span class="qty-value">0</span><button type="button" class="qty-btn plus" aria-label="Aumentar quantidade">+</button></div></li>
+      <li class="item" data-name="2 litros" data-price="14.00"><span class="item-name">2 litros<span class="item-desc">Coca-Cola / Coca Zero</span></span><span class="item-fill"></span><span class="price">R$ 14,00</span><div class="qty-stepper" role="group" aria-label="Quantidade de 2 litros"><button type="button" class="qty-btn minus" aria-label="Diminuir quantidade">&minus;</button><span class="qty-value">0</span><button type="button" class="qty-btn plus" aria-label="Aumentar quantidade">+</button></div></li>
+    </ul>
+  </section>
+
+</main>
+
+<footer>
+  <div class="fbrand">CANTINHO DO ESPETO</div>
+  <div class="hero-links" style="margin-top:1.1rem;">
+    <a class="pill-link whats" href="https://wa.me/5518997992355" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.47 14.38c-.29-.15-1.7-.84-1.96-.93-.26-.1-.46-.15-.65.15-.19.29-.75.93-.92 1.12-.17.19-.34.22-.63.07-.29-.15-1.23-.45-2.35-1.45-.87-.77-1.45-1.73-1.62-2.02-.17-.29-.02-.45.13-.6.13-.13.29-.34.44-.51.15-.17.19-.29.29-.48.1-.19.05-.36-.02-.51-.07-.15-.65-1.56-.89-2.14-.23-.56-.47-.48-.65-.49-.17-.01-.36-.01-.55-.01-.19 0-.51.07-.78.36-.26.29-1.02 1-1.02 2.43 0 1.43 1.05 2.82 1.19 3.01.15.19 2.07 3.16 5.02 4.43.7.3 1.25.48 1.68.62.7.22 1.34.19 1.84.11.56-.08 1.7-.7 1.94-1.37.24-.68.24-1.26.17-1.38-.07-.12-.26-.19-.55-.34z"/><path d="M12.02 2.5c-5.25 0-9.5 4.24-9.5 9.48 0 1.67.44 3.29 1.27 4.72L2.5 21.5l4.9-1.28a9.48 9.48 0 0 0 4.62 1.18h.01c5.24 0 9.5-4.24 9.5-9.48 0-2.53-.99-4.91-2.78-6.7a9.47 9.47 0 0 0-6.73-2.72zm0 17.32h-.01a7.83 7.83 0 0 1-3.99-1.09l-.29-.17-2.9.76.78-2.82-.19-.29a7.85 7.85 0 0 1-1.2-4.23c0-4.34 3.53-7.87 7.88-7.87 2.1 0 4.08.82 5.57 2.31a7.82 7.82 0 0 1 2.31 5.57c0 4.34-3.54 7.83-7.96 7.83z"/></svg>
+      <span>Chamar no WhatsApp</span>
+    </a>
+    <a class="pill-link insta" href="https://www.instagram.com/cantinhodoespeto46" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="0.9" fill="currentColor" stroke="none"/></svg>
+      <span>Seguir no Instagram</span>
+    </a>
+  </div>
+  <p>Preços sujeitos a alteração sem aviso prévio. Consulte o atendente sobre itens sem preço fixo na placa.</p>
+</footer>
+
+<div class="cart-spacer" id="cartSpacer"></div>
+
+<!-- Barra fixa do carrinho -->
+<div class="cart-bar" id="cartBar">
+  <div class="cart-info">
+    <span id="cartCount">0 itens</span>
+    <strong id="cartTotal">R$ 0,00</strong>
+  </div>
+  <button type="button" class="cart-cta" id="openOrderBtn">Fazer pedido</button>
+</div>
+
+<!-- Modal de finalização de pedido -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal-box">
+    <h3>Finalizar pedido</h3>
+    <p class="modal-sub">Confira os itens e informe seus dados para enviar o pedido pelo WhatsApp.</p>
+
+    <div class="order-summary" id="orderSummary"></div>
+
+    <form id="orderForm" novalidate>
+      <div class="field" id="fieldNome">
+        <label for="inputNome">Nome</label>
+        <input type="text" id="inputNome" name="nome" placeholder="Seu nome" autocomplete="name">
+        <div class="err">Informe seu nome.</div>
+      </div>
+      <div class="field" id="fieldWhats">
+        <label for="inputWhats">WhatsApp</label>
+        <input type="tel" id="inputWhats" name="whatsapp" placeholder="(18) 99999-9999" autocomplete="tel" inputmode="tel">
+        <div class="err">Informe um número de WhatsApp válido.</div>
+      </div>
+      <div class="field">
+        <label for="inputMesa">Número da mesa <span class="opt">(opcional)</span></label>
+        <input type="text" id="inputMesa" name="mesa" placeholder="Ex: 5" inputmode="numeric">
+      </div>
+
+      <div class="modal-actions">
+        <button type="button" class="btn-cancel" id="cancelOrderBtn">Voltar</button>
+        <button type="submit" class="btn-send">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.47 14.38c-.29-.15-1.7-.84-1.96-.93-.26-.1-.46-.15-.65.15-.19.29-.75.93-.92 1.12-.17.19-.34.22-.63.07-.29-.15-1.23-.45-2.35-1.45-.87-.77-1.45-1.73-1.62-2.02-.17-.29-.02-.45.13-.6.13-.13.29-.34.44-.51.15-.17.19-.29.29-.48.1-.19.05-.36-.02-.51-.07-.15-.65-1.56-.89-2.14-.23-.56-.47-.48-.65-.49-.17-.01-.36-.01-.55-.01-.19 0-.51.07-.78.36-.26.29-1.02 1-1.02 2.43 0 1.43 1.05 2.82 1.19 3.01.15.19 2.07 3.16 5.02 4.43.7.3 1.25.48 1.68.62.7.22 1.34.19 1.84.11.56-.08 1.7-.7 1.94-1.37.24-.68.24-1.26.17-1.38-.07-.12-.26-.19-.55-.34z"/><path d="M12.02 2.5c-5.25 0-9.5 4.24-9.5 9.48 0 1.67.44 3.29 1.27 4.72L2.5 21.5l4.9-1.28a9.48 9.48 0 0 0 4.62 1.18h.01c5.24 0 9.5-4.24 9.5-9.48 0-2.53-.99-4.91-2.78-6.7a9.47 9.47 0 0 0-6.73-2.72zm0 17.32h-.01a7.83 7.83 0 0 1-3.99-1.09l-.29-.17-2.9.76.78-2.82-.19-.29a7.85 7.85 0 0 1-1.2-4.23c0-4.34 3.53-7.87 7.88-7.87 2.1 0 4.08.82 5.57 2.31a7.82 7.82 0 0 1 2.31 5.57c0 4.34-3.54 7.83-7.96 7.83z"/></svg>
+          Enviar no WhatsApp
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+(function(){
+  var WHATS_NUMBER = "5518997992355"; // número do estabelecimento (formato internacional, sem +)
+
+  var cart = {}; // key: item name -> { price: number, qty: number }
+
+  var cartBar = document.getElementById('cartBar');
+  var cartSpacer = document.getElementById('cartSpacer');
+  var cartCountEl = document.getElementById('cartCount');
+  var cartTotalEl = document.getElementById('cartTotal');
+  var modalOverlay = document.getElementById('modalOverlay');
+  var orderSummary = document.getElementById('orderSummary');
+  var orderForm = document.getElementById('orderForm');
+
+  function formatBRL(value){
+    return 'R$ ' + value.toFixed(2).replace('.', ',');
+  }
+
+  function updateCartBar(){
+    var totalQty = 0, totalPrice = 0;
+    Object.keys(cart).forEach(function(name){
+      totalQty += cart[name].qty;
+      totalPrice += cart[name].qty * cart[name].price;
+    });
+
+    if(totalQty > 0){
+      cartBar.classList.add('visible');
+      cartSpacer.style.height = '76px';
+    } else {
+      cartBar.classList.remove('visible');
+      cartSpacer.style.height = '0px';
+    }
+
+    cartCountEl.textContent = totalQty + (totalQty === 1 ? ' item' : ' itens');
+    cartTotalEl.textContent = formatBRL(totalPrice);
+  }
+
+  function setQty(li, name, price, qty){
+    qty = Math.max(0, qty);
+    if(qty === 0){
+      delete cart[name];
+    } else {
+      cart[name] = { price: price, qty: qty };
+    }
+    li.querySelector('.qty-value').textContent = qty;
+    li.classList.toggle('in-cart', qty > 0);
+    updateCartBar();
+  }
+
+  document.querySelectorAll('li.item[data-price]').forEach(function(li){
+    var price = parseFloat(li.getAttribute('data-price'));
+    if(isNaN(price)) return; // itens "consultar" sem stepper
+    var name = li.getAttribute('data-name');
+    var minus = li.querySelector('.qty-btn.minus');
+    var plus = li.querySelector('.qty-btn.plus');
+    if(!minus || !plus) return;
+
+    var qty = 0;
+    minus.addEventListener('click', function(){
+      qty = Math.max(0, qty - 1);
+      setQty(li, name, price, qty);
+    });
+    plus.addEventListener('click', function(){
+      qty += 1;
+      setQty(li, name, price, qty);
+    });
+  });
+
+  function buildSummary(){
+    var rows = '';
+    var total = 0;
+    Object.keys(cart).forEach(function(name){
+      var it = cart[name];
+      var sub = it.qty * it.price;
+      total += sub;
+      rows += '<div class="row"><span><span class="qtylabel">' + it.qty + 'x</span>' + name + '</span><span>' + formatBRL(sub) + '</span></div>';
+    });
+    orderSummary.innerHTML = rows + '<div class="total-row"><span>Total</span><span>' + formatBRL(total) + '</span></div>';
+    return total;
+  }
+
+  function openModal(){
+    if(Object.keys(cart).length === 0) return;
+    buildSummary();
+    modalOverlay.classList.add('open');
+    document.body.classList.add('modal-locked');
+  }
+  function closeModal(){
+    modalOverlay.classList.remove('open');
+    document.body.classList.remove('modal-locked');
+  }
+
+  document.getElementById('openOrderBtn').addEventListener('click', openModal);
+  document.getElementById('cancelOrderBtn').addEventListener('click', closeModal);
+  modalOverlay.addEventListener('click', function(e){
+    if(e.target === modalOverlay) closeModal();
+  });
+
+  function digitsOnly(str){ return (str || '').replace(/\D/g, ''); }
+
+  orderForm.addEventListener('submit', function(e){
+    e.preventDefault();
+
+    var nomeField = document.getElementById('fieldNome');
+    var whatsField = document.getElementById('fieldWhats');
+    var nomeInput = document.getElementById('inputNome');
+    var whatsInput = document.getElementById('inputWhats');
+    var mesaInput = document.getElementById('inputMesa');
+
+    var nome = nomeInput.value.trim();
+    var whatsDigits = digitsOnly(whatsInput.value);
+    var mesa = mesaInput.value.trim();
+
+    var valid = true;
+    nomeField.classList.toggle('invalid', nome.length === 0);
+    if(nome.length === 0) valid = false;
+
+    whatsField.classList.toggle('invalid', whatsDigits.length < 10);
+    if(whatsDigits.length < 10) valid = false;
+
+    if(!valid) return;
+
+    var total = 0;
+    var lines = [];
+    Object.keys(cart).forEach(function(name){
+      var it = cart[name];
+      var sub = it.qty * it.price;
+      total += sub;
+      lines.push('• ' + it.qty + 'x ' + name + ' — ' + formatBRL(sub));
+    });
+
+    var msg = '*Novo pedido - Cantinho do Espeto*%0A%0A';
+    msg += '*Cliente:* ' + encodeURIComponent(nome) + '%0A';
+    msg += '*WhatsApp:* ' + encodeURIComponent(whatsInput.value.trim()) + '%0A';
+    if(mesa.length > 0){
+      msg += '*Mesa:* ' + encodeURIComponent(mesa) + '%0A';
+    }
+    msg += '%0A*Itens do pedido:*%0A';
+    msg += lines.map(encodeURIComponent).join('%0A');
+    msg += '%0A%0A*Total: ' + encodeURIComponent(formatBRL(total)) + '*';
+
+    var url = 'https://wa.me/' + WHATS_NUMBER + '?text=' + msg;
+    window.open(url, '_blank');
+    closeModal();
+  });
+
+  updateCartBar();
+})();
+</script>
+
+</body>
+</html>
